@@ -24,7 +24,7 @@ app.get('/evesswearjar', function(req, res) {
     }
 
     //If there is a successful connection, note how many times Eve has cursed this stream (maybe her most used word too?)
-    var returnVal;
+    var returnVal = "";
     var response = dbConnection.select("*", "swears")
         .then((value) => {
             value.forEach ((i) => {
