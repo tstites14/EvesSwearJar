@@ -32,8 +32,15 @@ class DBConnection {
         return queryResult;
     }
 
-    select(select, from, where = null, whereCondition = null, orderBy = null) {
+    select(select, from, where = null, whereCondition = null, orderBy = "'desc'") {
+        var query = 'SELECT ' + select + ' FROM ' + from;
 
+        if (where != null && whereCondition != null)
+            query += ' WHERE ' + where + ' = "' + whereCondition + '"'
+        
+        query += ' ORDER BY ' + orderBy
+
+        return this.#queryDB(query);
     }
 
     insert(into, fields, values) {
