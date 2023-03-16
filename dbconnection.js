@@ -14,22 +14,16 @@ class DBConnection {
 
     #queryDB(query) {
         var conn = this.#connect();
-        var queryResult;
 
-        try {
-            conn.connect();
+        conn.connect();
+        return new Promise((resolve, reject) => {
             conn.query(query, function(err, result) {
-                if (err) throw err;
-
-                queryResult = result;
+                if (result === undefined)
+                    reject(new Error(err.message));
+                else
+                    resolve(result);
             });
-        } catch (err) {
-            console.log(err);
-        } finally {
-            conn.end();
-        }
-
-        return queryResult;
+        });
     }
 
     select(select, from, where = null, whereCondition = null, orderBy = "'desc'") {

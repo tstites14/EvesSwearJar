@@ -19,12 +19,22 @@ app.get('/evesswearjar', function(req, res) {
     //If there is data, connect to DB and insert data
     if (wordArray.length > 0) {
         for (var i = 0; i < wordArray.length; i++) {
-            dbConnection.insert("swears", ["category", "phrase", "quantity"], [wordArray[i][0], phrase.getPhrase(), wordArray[i][1]]);
+            //dbConnection.insert("swears", ["category", "phrase", "quantity"], [wordArray[i][0], phrase.getPhrase(), wordArray[i][1]]);
         }
     }
 
     //If there is a successful connection, note how many times Eve has cursed this stream (maybe her most used word too?)
-    var response = phrase.getPhrase() + " :)"
-    res.end(response);
+    var returnVal;
+    var response = dbConnection.select("*", "swears")
+        .then((value) => {
+            value.forEach ((i) => {
+                returnVal += i.category + ", ";
+            });
+            res.end(returnVal);
+        })
+        .catch((err) => {
+            returnVal = err.message;
+            res.end(returnVal);
+        });
 })
 app.listen();
