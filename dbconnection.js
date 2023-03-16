@@ -26,13 +26,27 @@ class DBConnection {
         });
     }
 
-    select(select, from, where = null, whereCondition = null, orderBy = "'desc'") {
+    select(select, from, where = null, whereCondition = null, orderBy = "DESC") {
         var query = 'SELECT ' + select + ' FROM ' + from;
 
         if (where != null && whereCondition != null)
             query += ' WHERE ' + where + ' = "' + whereCondition + '"'
         
         query += ' ORDER BY ' + orderBy
+
+        return this.#queryDB(query);
+    }
+    
+    selectGroup(select, from, group, where = null, whereCondition = null, orderBy = select + " 'DESC'", limit = false) {
+        var query = 'SELECT ' + select + ' FROM ' + from;
+
+        if (where != null && whereCondition != null)
+            query += ' WHERE ' + where + ' = "' + whereCondition + '"'
+        
+        query += ' GROUP BY ' + group + ' ORDER BY ' + orderBy
+
+        if (limit)
+                query += ' LIMIT 1';
 
         return this.#queryDB(query);
     }

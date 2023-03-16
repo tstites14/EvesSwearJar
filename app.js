@@ -25,12 +25,27 @@ app.get('/evesswearjar', function(req, res) {
 
     //If there is a successful connection, note how many times Eve has cursed this stream (maybe her most used word too?)
     var returnVal = "";
-    var response = dbConnection.select("*", "swears")
+
+    var commonWord = "";
+    var commonCount = 0;
+
+    var response = dbConnection.select("quantity, ", "swears")
         .then((value) => {
+            var totalCount = 0;
             value.forEach ((i) => {
-                returnVal += i.category + ", ";
+                totalCount += i.quantity;
             });
-            res.end(returnVal);
+            var common = dbConnection.selectGroup("category, COUNT(category) AS catCount", "swears", "category", "datetime", "CURDATE()", "catCount DESC", true)
+                .then((value) => {
+                    commonWord = value.category;
+                    commonCount = value.catCount;
+
+                    returnVal = `Eve has cursed ${totalCount} times this stream, and her most used word is ${commonWord}`;
+                    res.end(returnVal);
+                })
+                .catch((err) => {
+                    returnVal = err.message;
+                });
         })
         .catch((err) => {
             returnVal = err.message;
