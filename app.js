@@ -29,22 +29,20 @@ app.get('/evesswearjar', function(req, res) {
     var commonWord = "";
     var commonCount = 0;
 
-    var response = dbConnection.select("quantity, ", "swears")
+    var response = dbConnection.select("quantity, category", "swears", "DATE_FORMAT(datetime, '%Y-%m-%d')", 'CURDATE()')
         .then((value) => {
-            var totalCount = 0;
-            value.forEach ((i) => {
-                totalCount += i.quantity;
-            });
-            var common = dbConnection.selectGroup("category, COUNT(category) AS catCount", "swears", "category", "datetime", "CURDATE()", "catCount DESC", true)
-                .then((value) => {
-                    commonWord = value.category;
-                    commonCount = value.catCount;
+            var totalCount = value.length;
+            returnVal = "TotalCount: " + totalCount.toString();
 
-                    returnVal = `Eve has cursed ${totalCount} times this stream, and her most used word is ${commonWord}`;
+            //Get the 
+            dbConnection.selectGroup("category, COUNT(category) AS catCount", "swears", "category", "DATE_FORMAT(datetime, '%Y-%m-%d')", "CURDATE()", "catCount DESC", true)
+                .then((value) => {
+                    returnVal = `Eve has cursed ${totalCount} times today. The word of the day is ${value[0].category}!`;
                     res.end(returnVal);
                 })
                 .catch((err) => {
                     returnVal = err.message;
+                    res.end(returnVal);
                 });
         })
         .catch((err) => {
