@@ -3,6 +3,8 @@ const DBConnection = require('./dbconnection.js');
 const Phrase = require('./phrase.js');
 const Dictionary = require('./dictionary.js');
 
+const CommandManager = require('./commands/commandmanager.js');
+
 var app = express();
 app.get('/evesswearjar', function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -16,6 +18,16 @@ app.get('/evesswearjar', function(req, res) {
     //Search submission for matching words in dict array
     wordArray = dictionary.getMatchingArray(phrase.getPhraseArray());
 
+    /*Command code starts here*/
+    var commandManager = new CommandManager(wordArray);
+    commandManager.runCommand()
+        .then((value) => {
+            res.end(value);
+        })
+        .catch((err) => {
+            res.end(err);
+        });
+
     //If there is data, connect to DB and insert data
     if (wordArray.length > 0) {
         for (var i = 0; i < wordArray.length; i++) {
@@ -23,7 +35,6 @@ app.get('/evesswearjar', function(req, res) {
         }
     }
 
-    //If there is a successful connection, note how many times Eve has cursed this stream (maybe her most used word too?)
     var returnVal = "";
 
     var commonWord = "";

@@ -8,7 +8,7 @@ const Count = require('./count.js');
 const Help = require('./help.js');
 
 class CommandManager {
-    constructor() {
+    constructor(array) {
         this.commands = {
             ADD: "add",
             LIST: "list",
@@ -17,37 +17,46 @@ class CommandManager {
             RANDOM: "random",
             COUNT: "count"
         };
+
+        this.command = array[0];
     }
 
-    runCommand(input) {
+    runCommand() {
         var command;
-        var output = "";
 
-        switch (input) {
+        switch (this.command) {
             case this.commands.ADD:
-                command = new Add(input);
+                command = new Add(this.command);
                 break;
             case this.commands.LIST:
-                command = new List(input);
+                command = new List(this.command);
                 break;
             case this.commands.REMOVE:
-                command = new Remove(input);
+                command = new Remove(this.command);
                 break;
             case this.commands.RANDOM:
-                command = new Random(input);
+                command = new Random(this.command);
                 break;
             case this.commands.COUNT:
-                command = new Count(input);
+                command = new Count(this.command);
                 break;
             case this.commands.HELP:
-                command = new Help(input);
+                command = new Help(this.command);
                 break;
             default:
-                command = new Command(input);
+                command = new Command(this.command);
                 break;
         }
 
-        command.run();
+        return new Promise((resolve, reject) => {
+        	run()
+                .then((value) => {
+                    resolve(value);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+        });
     }
 }
 
