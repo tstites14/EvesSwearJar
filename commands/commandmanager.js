@@ -1,4 +1,4 @@
-const Command = require('./commands/command.js')
+const Command = require('./command.js')
 
 class CommandManager {
     constructor() {
