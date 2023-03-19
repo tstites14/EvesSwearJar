@@ -18,10 +18,13 @@ class DBConnection {
         conn.connect();
         return new Promise((resolve, reject) => {
             conn.query(query, function(err, result) {
-                if (result === undefined)
+                if (result === undefined) {
+                    conn.end();
                     reject(new Error(err.message));
-                else
+                } else {
+                    conn.end();
                     resolve(result);
+                }
             });
         });
     }
