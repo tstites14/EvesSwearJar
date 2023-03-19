@@ -49,7 +49,7 @@ class CommandManager {
         }
 
         return new Promise((resolve, reject) => {
-        	run()
+        	command.run()
                 .then((value) => {
                     resolve(value);
                 })
