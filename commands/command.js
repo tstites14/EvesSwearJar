@@ -1,5 +1,6 @@
 class Command {
     constructor(array) {
+        this.commandArray = array;
         this.command = array[0];
     }
 
