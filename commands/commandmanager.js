@@ -18,7 +18,7 @@ class CommandManager {
             COUNT: "count"
         };
 
-        this.command = array[0][0];
+        this.command = array[0];
     }
 
     runCommand() {

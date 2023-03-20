@@ -19,7 +19,7 @@ app.get('/evesswearjar', function(req, res) {
     wordArray = dictionary.getMatchingArray(phrase.getPhraseArray());
 
     /*Command code starts here*/
-    var commandManager = new CommandManager([["add", '1'], ["fuck", "1"]]);
+    var commandManager = new CommandManager(phrase.getPhraseArray());
     commandManager.runCommand()
         .then((value) => {
             res.end(value);
