@@ -5,7 +5,7 @@ class Command {
 
     run() {
         return new Promise((resolve, reject) => {
-            reject("This is not a valid command! Use !COMMAND help to see a list of commands!");
+            reject(new Error("This is not a valid command! Use !COMMAND help to see a list of commands!"));
         })
     }
 }

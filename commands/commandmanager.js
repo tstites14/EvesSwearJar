@@ -18,13 +18,13 @@ class CommandManager {
             COUNT: "count"
         };
 
-        this.command = array[0];
+        this.command = array[0][0];
     }
 
     runCommand() {
         var command;
 
-        switch (this.command) {
+        switch (String(this.command)) {
             case this.commands.ADD:
                 command = new Add(this.command);
                 break;

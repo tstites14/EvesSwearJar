@@ -19,17 +19,17 @@ app.get('/evesswearjar', function(req, res) {
     wordArray = dictionary.getMatchingArray(phrase.getPhraseArray());
 
     /*Command code starts here*/
-    var commandManager = new CommandManager(wordArray);
+    var commandManager = new CommandManager([["add", '1'], ["fuck", "1"]]);
     commandManager.runCommand()
         .then((value) => {
             res.end(value);
         })
         .catch((err) => {
-            res.end(err);
+            res.end(err.message);
         });
 
     //If there is data, connect to DB and insert data
-    if (wordArray.length > 0) {
+    /*if (wordArray.length > 0) {
         for (var i = 0; i < wordArray.length; i++) {
             //dbConnection.insert("swears", ["category", "phrase", "quantity"], [wordArray[i][0], phrase.getPhrase(), wordArray[i][1]]);
         }
@@ -59,6 +59,6 @@ app.get('/evesswearjar', function(req, res) {
         .catch((err) => {
             returnVal = err.message;
             res.end(returnVal);
-        });
+        });*/
 })
 app.listen();
