@@ -18,6 +18,7 @@ class CommandManager {
             COUNT: "count"
         };
 
+        this.array = array;
         this.command = array[0];
     }
 
@@ -26,25 +27,25 @@ class CommandManager {
 
         switch (String(this.command)) {
             case this.commands.ADD:
-                command = new Add(this.command);
+                command = new Add(this.array);
                 break;
             case this.commands.LIST:
-                command = new List(this.command);
+                command = new List(this.array);
                 break;
             case this.commands.REMOVE:
-                command = new Remove(this.command);
+                command = new Remove(this.array);
                 break;
             case this.commands.RANDOM:
-                command = new Random(this.command);
+                command = new Random(this.array);
                 break;
             case this.commands.COUNT:
-                command = new Count(this.command);
+                command = new Count(this.array);
                 break;
             case this.commands.HELP:
-                command = new Help(this.command);
+                command = new Help(this.array);
                 break;
             default:
-                command = new Command(this.command);
+                command = new Command(this.array);
                 break;
         }
 

@@ -1,6 +1,6 @@
 class Command {
-    constructor(command) {
-        this.command = command;
+    constructor(array) {
+        this.command = array[0];
     }
 
     run() {
