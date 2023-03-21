@@ -1,28 +1,32 @@
 const Command = require('./command.js');
+const DBConnection = require('../dbconnection.js');
 
 class List extends Command {
     run() {
-        var returnVal = "";
+        var dbConnection = new DBConnection();
 
-        var commonWord = "";
-        var commonCount = 0;
-    
-        return dbConnection.select("quantity, category", "swears", "DATE_FORMAT(datetime, '%Y-%m-%d')", 'CURDATE()')
+        return new Promise((resolve, reject) => {
+            dbConnection.select("quantity, category", "swears", "DATE_FORMAT(datetime, '%Y-%m-%d')", 'CURDATE()')
             .then((value) => {
                 var totalCount = value.length;
-                returnVal = "TotalCount: " + totalCount.toString();
     
                 dbConnection.selectGroup("category, COUNT(category) AS catCount", "swears", "category", "DATE_FORMAT(datetime, '%Y-%m-%d')", "CURDATE()", "catCount DESC", true)
                     .then((value) => {
-                        return `Eve has cursed ${totalCount} times today. The word of the day is ${value[0].category}!`;
+
+                        if (value[0] != undefined && value[0] != null) {
+                            resolve(`Eve has cursed ${totalCount} times today. The word of the day is ${value[0].category}!`);
+                        } else {
+                            resolve(`Eve has cursed ${totalCount} times today.`);
+                        }
                     })
                     .catch((err) => {
-                        return err.message;
+                        reject(err.message);
                     });
             })
             .catch((err) => {
-                return err.message;
+                reject(err.message);
             });
+        });
     }
 }
 
