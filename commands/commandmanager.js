@@ -6,6 +6,7 @@ const Remove = require('./remove.js');
 const Random = require('./random.js');
 const Count = require('./count.js');
 const Help = require('./help.js');
+const Interesting = require('./interesting.js');
 
 class CommandManager {
     constructor(array) {
@@ -15,7 +16,8 @@ class CommandManager {
             REMOVE: "remove",
             HELP: "help",
             RANDOM: "random",
-            COUNT: "count"
+            COUNT: "count",
+            INTERESTING: "interesting"
         };
 
         this.array = array;
@@ -43,6 +45,9 @@ class CommandManager {
                 break;
             case this.commands.HELP:
                 command = new Help(this.array);
+                break;
+            case this.commands.INTERESTING:
+                command = new Interesting(this.array);
                 break;
             default:
                 command = new Command(this.array);
