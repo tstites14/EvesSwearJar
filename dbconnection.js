@@ -71,6 +71,25 @@ class DBConnection {
         valuesString = valuesString.substring(0, valuesString.length - 2);
         return this.#queryDB("INSERT INTO " + into + " (" + fieldString + ") VALUES (" + valuesString + ");");
     }
+
+    update(table, fields, values, where = null, whereCondition = null) {
+        if (fields.length != values.length) {
+            console.log("Incorrect values in either fields or values");
+            return;
+        }
+
+        var whereContent = "";
+        var updateContent = "";
+        for (var i = 0; i < fields.length; i++) {
+            updateContent += `${fields[i]} = ${values[i]}, `
+        }
+        updateContent = updateContent.substring(0, updateContent.length - 2);
+
+        if (where != null && whereCondition != null)
+            whereContent = `WHERE ${where} = ${whereCondition}`
+
+        return this.#queryDB(`UPDATE ${table} SET ${updateContent} ${whereContent}`);
+    }
 }
 
 module.exports = DBConnection;
