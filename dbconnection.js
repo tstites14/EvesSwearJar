@@ -12,7 +12,7 @@ class DBConnection {
         });
     }
 
-    #queryDB(query) {
+    queryDB(query) {
         var conn = this.#connect();
 
         conn.connect();
@@ -35,7 +35,7 @@ class DBConnection {
         if (where != null && whereCondition != null)
             query += ' WHERE ' + where + ' = ' + whereCondition;
 
-        return this.#queryDB(query);
+        return this.queryDB(query);
     }
     
     selectGroup(select, from, group, where = null, whereCondition = null, orderBy = select + " DESC", limit = false) {
@@ -49,7 +49,7 @@ class DBConnection {
         if (limit)
                 query += ' LIMIT 1';
 
-        return this.#queryDB(query);
+        return this.queryDB(query);
     }
 
     insert(into, fields, values) {
@@ -69,7 +69,7 @@ class DBConnection {
             valuesString += "'" + i + "', ";
         });
         valuesString = valuesString.substring(0, valuesString.length - 2);
-        return this.#queryDB("INSERT INTO " + into + " (" + fieldString + ") VALUES (" + valuesString + ");");
+        return this.queryDB("INSERT INTO " + into + " (" + fieldString + ") VALUES (" + valuesString + ");");
     }
 
     update(table, fields, values, where = null, whereCondition = null) {
@@ -88,7 +88,7 @@ class DBConnection {
         if (where != null && whereCondition != null)
             whereContent = `WHERE ${where} = ${whereCondition}`
 
-        return this.#queryDB(`UPDATE ${table} SET ${updateContent} ${whereContent}`);
+        return this.queryDB(`UPDATE ${table} SET ${updateContent} ${whereContent}`);
     }
 }
 
