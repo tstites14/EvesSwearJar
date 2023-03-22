@@ -2,7 +2,7 @@ const Command = require('./command.js');
 const DBConnection = require('../dbconnection.js');
 
 class Interesting extends Command {
-    run() {
+    run(dbConnection) {
         var dbConnection = new DBConnection();
 
         return new Promise((resolve, reject) => {

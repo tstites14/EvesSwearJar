@@ -1,7 +1,7 @@
 const Command = require('./command.js');
 
 class Count extends Command {
-    run() {
+    run(dbConnection) {
         return new Promise((resolve, reject) => {
             resolve(this.command);
         });

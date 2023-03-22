@@ -1,7 +1,7 @@
 const Command = require('./command.js');
 
 class Random extends Command {
-    run() {
+    run(dbConnection) {
         return new Promise((resolve, reject) => {
             resolve(this.command);
         });

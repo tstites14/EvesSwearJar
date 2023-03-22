@@ -2,7 +2,7 @@ const Command = require('./command.js');
 const Dictionary = require('../dictionary.js');
 
 class Add extends Command {
-    run() {
+    run(dbConnection) {
         var dictionary = new Dictionary();
         var uniqueWords = dictionary.getMatchingArray(this.commandArray);
 
