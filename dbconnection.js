@@ -29,11 +29,14 @@ class DBConnection {
         });
     }
 
-    select(select, from, where = null, whereCondition = null, orderBy = "DESC") {
-        var query = 'SELECT ' + select + ' FROM ' + from;
+    select(select, from, where = null, whereCondition = null, orderBy = null, orderByOrder = null) {
+        var query = `SELECT ${select} FROM ${from}`;
 
         if (where != null && whereCondition != null)
-            query += ' WHERE ' + where + ' = ' + whereCondition;
+            query += ` WHERE ${where} = ${whereCondition}`;
+
+        if (orderBy != null && orderByOrder != null)
+            query += ` ORDER BY ${orderBy} ${orderByOrder}`;
 
         return this.queryDB(query);
     }
