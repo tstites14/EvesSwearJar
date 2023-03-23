@@ -11,7 +11,7 @@ describe('Select function', () => {
         });
     });
 
-    test('Select without where clause and order by returns correctly', async () => {
+    test('Without where clause and order by returns correctly', async () => {
         expect.assertions(1);
 
         await dbConnection.select("*", "swears").then((value) => {
@@ -20,7 +20,7 @@ describe('Select function', () => {
 
     });
 
-    test('Select with only where clause returns correctly', async () => {
+    test('With only where clause returns correctly', async () => {
         expect.assertions(1);
 
         await dbConnection.select("*", "swears", "category", "'fuck'").then((value) => {
@@ -28,7 +28,7 @@ describe('Select function', () => {
         });
     });
 
-    test('Select with where and without whereCondition returns correctly', async () => {
+    test('With where and without whereCondition returns correctly', async () => {
         expect.assertions(1);
 
         await dbConnection.select("*", "swears", "category").then((value) => {
@@ -36,13 +36,21 @@ describe('Select function', () => {
         });
     });
 
-    test('Select with both where and order by clauses returned correctly', async () => {
+    test('Both where and order by clauses returned correctly', async () => {
         expect.assertions(1)
 
         await dbConnection.select("*", "swears", "category", "'fuck'", "category", "DESC").then((value) => {
             expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck' ORDER BY category DESC");
         });
     });
+
+    test('Where condition is always wrapped in single quotes', async () => {
+        expect.assertions(1);
+
+        await dbConnection.select("*", "swears", "category", "fuck").then((value) => {
+            expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck'");
+        })
+    })
 
     afterAll(() => {
         jest.restoreAllMocks();
