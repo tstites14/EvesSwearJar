@@ -33,7 +33,7 @@ class DBConnection {
         var query = `SELECT ${select} FROM ${from}`;
 
         if (where != null && whereCondition != null)
-            query += ` WHERE ${where} = ${whereCondition}`;
+            query += ` WHERE ${where} = '${whereCondition}'`;
 
         if (orderBy != null && orderByOrder != null)
             query += ` ORDER BY ${orderBy} ${orderByOrder}`;
@@ -41,13 +41,16 @@ class DBConnection {
         return this.queryDB(query);
     }
     
-    selectGroup(select, from, group, where = null, whereCondition = null, orderBy = select + " DESC", limit = false) {
+    selectGroup(select, from, group, where = null, whereCondition = null, orderBy = null, limit = false) {
         var query = 'SELECT ' + select + ' FROM ' + from;
 
         if (where != null && whereCondition != null)
-            query += ' WHERE ' + where + ' = ' + whereCondition + ''
+            query += ` WHERE ${where} = '${whereCondition}'`
         
-        query += ' GROUP BY ' + group + ' ORDER BY ' + orderBy
+        query += ' GROUP BY ' + group;
+        
+        if (orderBy != null)
+            query += ' ORDER BY ' + orderBy;
 
         if (limit)
                 query += ' LIMIT 1';

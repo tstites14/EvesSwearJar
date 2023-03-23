@@ -23,7 +23,7 @@ describe('Select function', () => {
     test('With only where clause returns correctly', async () => {
         expect.assertions(1);
 
-        await dbConnection.select("*", "swears", "category", "'fuck'").then((value) => {
+        await dbConnection.select("*", "swears", "category", "fuck").then((value) => {
             expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck'");
         });
     });
@@ -39,7 +39,7 @@ describe('Select function', () => {
     test('Both where and order by clauses returned correctly', async () => {
         expect.assertions(1)
 
-        await dbConnection.select("*", "swears", "category", "'fuck'", "category", "DESC").then((value) => {
+        await dbConnection.select("*", "swears", "category", "fuck", "category", "DESC").then((value) => {
             expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck' ORDER BY category DESC");
         });
     });
@@ -49,21 +49,39 @@ describe('Select function', () => {
 
         await dbConnection.select("*", "swears", "category", "fuck").then((value) => {
             expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck'");
-        })
+        });
     })
 
     afterAll(() => {
         jest.restoreAllMocks();
     });
 });
-/*
+
 describe('SelectGroup function', () => {
-    test('Returned query is valid', async () => {
-        
-    })
+    var dbConnection = new DBConnection();
+
+    beforeAll(() => {
+        jest.spyOn(DBConnection.prototype, 'queryDB').mockImplementation((query) => {
+            return new Promise((resolve, reject) => {
+                resolve(query);
+            })
+        });
+    });
+
+    test('All defaults returns correctly', async () => {
+        expect.assertions(1);
+
+        await dbConnection.selectGroup("*", "swears", "category").then((value) => {
+            expect(value).toBe("SELECT * FROM swears GROUP BY category");
+        });
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
 });
 
-
+/*
 describe('Delete function', () => {
     test('Returned query is valid', async () => {
         

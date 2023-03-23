@@ -8,6 +8,8 @@ const Count = require('./count.js');
 const Help = require('./help.js');
 const Interesting = require('./interesting.js');
 
+const DBConnection = require('../dbconnection.js');
+
 class CommandManager {
     constructor(array) {
         this.commands = {
@@ -55,7 +57,7 @@ class CommandManager {
         }
 
         return new Promise((resolve, reject) => {
-        	command.run()
+        	command.run(new DBConnection())
                 .then((value) => {
                     resolve(value);
                 })
