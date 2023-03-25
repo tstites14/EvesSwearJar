@@ -50,7 +50,15 @@ describe('Select function', () => {
         await dbConnection.select("*", "swears", "category", "fuck").then((value) => {
             expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck'");
         });
-    })
+    });
+
+    test('SQL injection attack fails', async () => {
+        expect.assertions(1);
+
+        await dbConnection.select("*", "swears", "category", ";-- DROP TABLE swears").then((value) => {
+            expect(value).toBe("SELECT * FROM swears");
+        });
+    });
 
     afterAll(() => {
         jest.restoreAllMocks();
@@ -73,6 +81,30 @@ describe('SelectGroup function', () => {
 
         await dbConnection.selectGroup("*", "swears", "category").then((value) => {
             expect(value).toBe("SELECT * FROM swears GROUP BY category");
+        });
+    });
+
+    test('Only where returns defaults', async () => {
+        expect.assertions(1);
+
+        await dbConnection.selectGroup("*", "swears", "category", "category").then((value) => {
+            expect(value).toBe("SELECT * FROM swears GROUP BY category");
+        });
+    });
+
+    test('All parameters filled returns correct result', async () => {
+        expect.assertions(1);
+
+        await dbConnection.selectGroup("*", "swears", "category", "category", "fuck", "category", true).then((value) => {
+            expect(value).toBe("SELECT * FROM swears WHERE category = 'fuck' GROUP BY category ORDER BY category DESC LIMIT 1");
+        });
+    });
+
+    test('SQL injection attack fails', async () => {
+        expect.assertions(1);
+
+        await dbConnection.selectGroup("*", "swears", "category", "category", ";-- DROP TABLE swears", "category", true).then((value) => {
+            expect(value).toBe("SELECT * FROM swears GROUP BY category ORDER BY category DESC LIMIT 1");
         });
     });
 
