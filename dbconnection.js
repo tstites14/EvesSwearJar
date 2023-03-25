@@ -30,15 +30,13 @@ class DBConnection {
     }
 
     select(select, from, where = null, whereCondition = null, orderBy = null, orderByOrder = null) {
-        var inputTester = /^[A-Za-z0-9*]+$/;
-
-        if (select.match(inputTester) && from.match(inputTester)) {
+        if (select.match(/^[A-Za-z*]+$/) && from.match(/^[A-Za-z]+$/)) {
             var query = `SELECT ${select} FROM ${from}`;
 
-            if (where != null && whereCondition != null && where.match(inputTester) && whereCondition.match(inputTester))
+            if (where != null && whereCondition != null && where.match(/^[A-Za-z]+$/) && whereCondition.match(/^[A-Za-z0-9]+$/))
                 query += ` WHERE ${where} = '${whereCondition}'`;
 
-            if (orderBy != null && orderByOrder != null && orderBy.match(inputTester) && orderByOrder.match(inputTester))
+            if (orderBy != null && orderByOrder != null && orderBy.match(/^[A-Za-z]+$/) && orderByOrder.match(/^[A-Za-z]+$/))
                 query += ` ORDER BY ${orderBy} ${orderByOrder}`;
 
             return this.queryDB(query);
@@ -50,17 +48,15 @@ class DBConnection {
     }
     
     selectGroup(select, from, group, where = null, whereCondition = null, orderBy = null, limit = false) {
-        var inputTester = /^[A-Za-z0-9*]+$/;
-
-        if (select.match(inputTester) && from.match(inputTester) && group.match(inputTester)) {
+        if (select.match(/^[A-Za-z*]+$/) && from.match(/^[A-Za-z]+$/) && group.match(/^[A-Za-z]+$/)) {
             var query = `SELECT ${select} FROM ${from}`;
 
-            if (where != null && whereCondition != null && where.match(inputTester) && whereCondition.match(inputTester))
+            if (where != null && whereCondition != null && where.match(/^[A-Za-z]+$/) && whereCondition.match(/^[A-Za-z0-9]+$/))
                 query += ` WHERE ${where} = '${whereCondition}'`
             
             query += ' GROUP BY ' + group;
             
-            if (orderBy != null && orderBy.match(inputTester))
+            if (orderBy != null && orderBy.match(/^[A-Za-z]+$/))
                 query += ' ORDER BY ' + orderBy + ' DESC';
 
             if (limit)
@@ -80,22 +76,26 @@ class DBConnection {
             return;
         }
 
-        var inputTester = /^[A-Za-z0-9*]+$/;
-
-        var fieldString = "";
-        fields.forEach((i) => {
-            if (i.match(inputTester))
-                fieldString += i + ", ";
-        });
-        fieldString = fieldString.substring(0, fieldString.length - 2);
-
-        var valuesString = "";
-        values.forEach((i) => {
-            if (i.match(inputTester))
-                valuesString += "'" + i + "', ";
-        });
-        valuesString = valuesString.substring(0, valuesString.length - 2);
-        return this.queryDB("INSERT INTO " + into + " (" + fieldString + ") VALUES (" + valuesString + ");");
+        if (into.match(/^[A-Za-z0-9*]+$/)) {
+            var fieldString = "";
+            fields.forEach((i) => {
+                if (i.match(/^[A-Za-z]+$/))
+                    fieldString += i + ", ";
+            });
+            fieldString = fieldString.substring(0, fieldString.length - 2);
+    
+            var valuesString = "";
+            values.forEach((i) => {
+                if (i.match(/^[A-Za-z0-9]+$/))
+                    valuesString += "'" + i + "', ";
+            });
+            valuesString = valuesString.substring(0, valuesString.length - 2);
+            return this.queryDB("INSERT INTO " + into + " (" + fieldString + ") VALUES (" + valuesString + ");");
+        } else {
+            return new Promise((resolve, reject) => {
+                reject(new Error("Invalid command entered"));
+            });
+        }
     }
 
     update(table, fields, values, where = null, whereCondition = null) {
