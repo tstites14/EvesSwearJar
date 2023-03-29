@@ -113,22 +113,84 @@ describe('SelectGroup function', () => {
     });
 });
 
-/*
-describe('Delete function', () => {
-    test('Returned query is valid', async () => {
-        
-    })
-});
-
 describe('Update function', () => {
-    test('Returned query is valid', async () => {
-        
-    })
+    var dbConnection = new DBConnection();
+
+    beforeAll(() => {
+        jest.spyOn(DBConnection.prototype, 'queryDB').mockImplementation((query) => {
+            return new Promise((resolve, reject) => {
+                resolve(query);
+            })
+        });
+    });
+
+    test('All defaults return correctly', async () => {
+        expect.assertions(1);
+
+        await dbConnection.update("swears", ["interesting"], ["1"], "id", "1").then((value) => {
+            expect(value).toBe("UPDATE swears SET interesting = '1' WHERE id = '1'");
+        });
+    });
+
+    test('Error occurs when fields and values are different', async () => {
+        expect.assertions(1);
+
+        await dbConnection.update("swears", ["interesting"], [], "id", "1")
+        .catch((err) => {
+            expect(err.message).toBe("The number of fields and values do not match.");
+        });
+    });
+
+    test('SQL injection attack in update fails', async () => {
+        expect.assertions(1);
+
+        await dbConnection.update("swears", ["category"], [";--DROP TABLE swears"], "id", "1").then((value) => {
+            expect(value).toBe("UPDATE swears SET  WHERE id = '1'");
+        });
+    });
+
+    test('SQL injection attack fails', async () => {
+        expect.assertions(1);
+
+        await dbConnection.update("swears", ["interesting"], ["1"], "id", ";--DROP TABLE swears").then((value) => {
+            expect(value).toBe("UPDATE swears SET interesting = '1' ");
+        });
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
 });
 
 describe('Insert function', () => {
-    test('Returned query is valid', async () => {
-        
-    })
+    var dbConnection = new DBConnection();
+
+    beforeAll(() => {
+        jest.spyOn(DBConnection.prototype, 'queryDB').mockImplementation((query) => {
+            return new Promise((resolve, reject) => {
+                resolve(query);
+            })
+        });
+    });
+
+    test('All defaults return correctly', async () => {
+        expect.assertions(1);
+
+        await dbConnection.insert("swears", ["category", "phrase", "quantity"], ["miscellaneous", "this is a test", "1"]).then((value) => {
+            expect(value).toBe("INSERT INTO swears (category, phrase, quantity) VALUES ('miscellaneous', 'this is a test', '1')");
+        });
+    });
+
+    test('Error occurs when fields and values are different', async () => {
+        expect.assertions(1);
+
+        await dbConnection.insert("swears", ["category", "phrase", "quantity"], ["miscellaneous", "this is a test"])
+        .catch((err) => {
+            expect(err.message).toBe("The number of fields and values do not match.");
+        });
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
 });
-*/
