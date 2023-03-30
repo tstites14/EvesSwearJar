@@ -4,7 +4,6 @@ class Phrase {
 
     constructor(phrase) {
         this.#phrase = phrase;
-        this.#phraseSplit = this.#phrase.split(' ');
     }
 
     getPhrase() {
@@ -12,7 +11,7 @@ class Phrase {
     }
 
     getPhraseArray() {
-        return this.#phraseSplit;
+        return this.#phrase.split(' ');
     }
 }
 
