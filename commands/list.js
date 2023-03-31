@@ -3,7 +3,7 @@ const Command = require('./command.js');
 class List extends Command {
     run(dbConnection) {
         return new Promise((resolve, reject) => {
-            dbConnection.select("quantity, category", "swears", "DATE_FORMAT(datetime, '%Y-%m-%d')", 'CURDATE()', "DESC")
+            dbConnection.select("quantity, category", "swears", "DATE_FORMAT(datetime, '%Y-%m-%d')", "CURDATE()", "DESC")
             .then((value) => {
                 var totalCount = value.length;
     

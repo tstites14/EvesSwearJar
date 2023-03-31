@@ -31,10 +31,10 @@ class DBConnection {
     }
 
     select(select, from, where = null, whereCondition = null, orderBy = null, orderByOrder = null) {
-        if (select.match(/^[A-Za-z()*]+$/) && from.match(/^[A-Za-z]+$/)) {
+        if (select.match(/^[-_A-Za-z()*%', ]+$/) && from.match(/^[A-Za-z]+$/)) {
             var query = `SELECT ${select} FROM ${from}`;
 
-            if (where != null && whereCondition != null && where.match(/^[A-Za-z]+$/) && whereCondition.match(/^[A-Za-z0-9]+$/))
+            if (where != null && whereCondition != null && where.match(/^[-_A-Za-z()*%', ]+$/) && whereCondition.match(/^[A-Za-z0-9()]+$/))
                 query += ` WHERE ${where} = '${whereCondition}'`;
 
             if (orderBy != null && orderByOrder != null && orderBy.match(/^[A-Za-z]+$/) && orderByOrder.match(/^[A-Za-z]+$/))
@@ -49,10 +49,10 @@ class DBConnection {
     }
     
     selectGroup(select, from, group, where = null, whereCondition = null, orderBy = null, limit = false) {
-        if (select.match(/^[A-Za-z*]+$/) && from.match(/^[A-Za-z]+$/) && group.match(/^[A-Za-z]+$/)) {
+        if (select.match(/^[-_A-Za-z()*%', ]+$/) && from.match(/^[A-Za-z]+$/) && group.match(/^[A-Za-z]+$/)) {
             var query = `SELECT ${select} FROM ${from}`;
 
-            if (where != null && whereCondition != null && where.match(/^[A-Za-z]+$/) && whereCondition.match(/^[A-Za-z0-9]+$/))
+            if (where != null && whereCondition != null && where.match(/^[-_A-Za-z()*%', ]+$/) && whereCondition.match(/^[A-Za-z0-9()]+$/))
                 query += ` WHERE ${where} = '${whereCondition}'`
             
             query += ' GROUP BY ' + group;
