@@ -9,18 +9,11 @@ const Help = require('./help.js');
 const Interesting = require('./interesting.js');
 
 const DBConnection = require('../dbconnection.js');
+const CommandList = require('./commandlist.js');
 
 class CommandManager {
     constructor(array) {
-        this.commands = {
-            ADD: "add",
-            LIST: "list",
-            REMOVE: "remove",
-            HELP: "help",
-            RANDOM: "random",
-            COUNT: "count",
-            INTERESTING: "interesting"
-        };
+        this.commands = new CommandList().getCommands();
 
         this.array = array;
         this.command = array[0];
