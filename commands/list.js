@@ -40,12 +40,12 @@ class List extends Command {
     }
 
     #formatOutput(output, todayCount, allTimeCount, category = null) {
-        if (todayCount > 1)
+        if (todayCount != 1)
             output += `times today. `
         else
             output += `time today. `
         
-        if (allTimeCount > 1)
+        if (allTimeCount != 1)
             output += `She has cursed ${allTimeCount} times since INSERT FIRST DAY HERE. `
         else
             output += `She has cursed ${allTimeCount} time since INSERT FIRST DAY HERE. `
