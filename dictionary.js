@@ -15,22 +15,27 @@ class Dictionary {
         var parser = new ArrayParser();
         var wordArray = new Array();
 
-        phraseArray.forEach((phraseWord) => {
-            this.#dict.forEach((category) => {
-                for (var i = 0; i < category.length; i++) {
-                    var word = category[i];
-
-                    if (phraseWord.match("^.*" + word)) {
-                        wordArray.push(word);
-
-                        //Once a word in a category has been found, skip the rest of the category
-                        break;
+        if (phraseArray.length > 0) {
+            phraseArray.forEach((phraseWord) => {
+                this.#dict.forEach((category) => {
+                    for (var i = 0; i < category.length; i++) {
+                        var word = category[i];
+    
+                        if (phraseWord.match("^.*" + word)) {
+                            wordArray.push(word);
+    
+                            //Once a word in a category has been found, skip the rest of the category
+                            break;
+                        }
                     }
-                }
+                });
             });
-        });
+    
+            return parser.getCondensedArray(wordArray);
+        } else {
+            return wordArray;
+        }
 
-        return parser.getCondensedArray(wordArray);
     }
 }
 
