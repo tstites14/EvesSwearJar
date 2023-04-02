@@ -1,4 +1,5 @@
 const Command = require('./command.js');
+const List = require('./list.js');
 const Dictionary = require('../dictionary.js');
 
 class Add extends Command {
@@ -18,10 +19,19 @@ class Add extends Command {
                 //Add squat counter increase
                 dbConnection.select("squats", "params")
                 .then((value) => {
-                    var currentValue = value[0].squats;
+                    var oldValue = value[0].squats;
+                    var currentValue = parseInt(oldValue) + newSquats;
 
-                    dbConnection.update("params", ["squats"], [(parseInt(currentValue) + newSquats).toString()], "squats", currentValue.toString());
-                    resolve((parseInt(currentValue) + newSquats).toString());
+                    dbConnection.update("params", ["squats"], [currentValue.toString()], "squats", oldValue.toString())
+
+                    //Run the List command for output
+                    new List(this.commandArray).run(dbConnection)
+                    .then((value) => {
+                        resolve(value);
+                    })
+                    .catch((err) => {
+                        reject(err.message);
+                    })
                 })
                 .catch((err) => {
                     reject(err.message);

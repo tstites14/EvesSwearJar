@@ -15,7 +15,12 @@ class Remove extends Command {
                         newValue = 0;
 
                     dbConnection.update("params", ["squats"], [newValue.toString()], "squats", currentValue.toString());
-                    resolve(newValue.toString());
+
+                    if (removedSquats == 1)
+                        resolve(`${removedSquats.toString()} squat has been removed from the counter`);
+                    else if (removedSquats > 1)
+                        resolve(`${removedSquats.toString()} squats have been removed from the counter`)
+                    else reject(new Error("You can't remove a negative number of squats!"))
                 })
                 .catch((err) => {
                     reject(err.message);

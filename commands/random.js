@@ -13,7 +13,7 @@ class Random extends Command {
                     var timestamp = value[0].datetime;
                     var monthName = timestamp.toLocaleString('default', { month: 'long' });
     
-                    resolve(`"${value[0].phrase}" - Eve ${monthName}, ${timestamp.getFullYear()}`);
+                    resolve(`"${value[0].phrase}" - Eve (${monthName}, ${timestamp.getFullYear()})`);
                 })
                 .catch((err) => {
                     reject(err.message);
