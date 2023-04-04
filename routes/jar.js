@@ -1,9 +1,8 @@
-var express = require('express');
-
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 router.get('/jar', function(req, res) {
-    res.end("TEST");
+    res.sendFile('jar.html', { root: './public/TheJar' });
 })
 
 module.exports = router;
