@@ -7,6 +7,7 @@ class Add extends Command {
         var dictionary = new Dictionary();
         var uniqueWords = dictionary.getMatchingArray(this.commandArray);
 
+        
         return new Promise((resolve, reject) => {
             if (uniqueWords.length > 0) {
                 var newSquats = 0;
@@ -36,6 +37,8 @@ class Add extends Command {
                 .catch((err) => {
                     reject(err.message);
                 });
+            } else {
+                reject("There were no swears in that submission!");
             }
         });
     }

@@ -1,16 +1,22 @@
-var express = require('express');
+const express = require('express');
 
 const Phrase = require('../phrase.js');
 const CommandManager = require('../commands/commandmanager.js');
 
-var router = express.Router();
+const router = express.Router();
 router.get('/', function(req, res) {
+    if (req.query.phrase == undefined && req.query.phrase == null) {
+        res.end("No valid command has been entered. Please use the 'help' command to learn more.");
+        return;
+    }
+
     res.writeHead(200, {'Content-Type': 'text/plain'});
 
     var phrase = new Phrase(req.query.phrase);
 
     /*Command code starts here*/
-    var commandManager = new CommandManager(phrase.getPhraseArray());
+    const phraseArray = phrase.getPhraseArray();
+    const commandManager = new CommandManager(phraseArray);
     commandManager.runCommand()
         .then((value) => {
             res.end(value);

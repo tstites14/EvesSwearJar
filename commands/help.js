@@ -3,7 +3,7 @@ const CommandList = require('./commandlist.js');
 
 class Help extends Command {
     run(dbConnection) {
-        var commandList = new CommandList().getCommands();
+        const commandList = new CommandList().getCommands();
 
         return new Promise((resolve, reject) => {
             switch(this.commandArray[1]) {

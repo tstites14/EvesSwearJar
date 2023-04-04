@@ -20,7 +20,7 @@ class CommandManager {
     }
 
     runCommand() {
-        var command;
+        let command;
 
         switch (String(this.command)) {
             case this.commands.ADD:

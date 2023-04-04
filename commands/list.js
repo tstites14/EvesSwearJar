@@ -5,21 +5,21 @@ class List extends Command {
         return new Promise((resolve, reject) => {
             dbConnection.select("quantity, category", "swears", "DATE_FORMAT(datetime, '%Y-%m-%d')", "CURDATE()", "DESC")
             .then((value) => {
-                var todayCount = value.length;
+                const todayCount = value.length;
     
                 dbConnection.select("COUNT(*) AS 'total'", "swears")
                 .then((value) => {
-                    var allTime = value[0].total;
+                    const allTime = value[0].total;
 
                     dbConnection.selectGroup("category, COUNT(category) AS catCount", "swears", "category", "DATE_FORMAT(datetime, '%Y-%m-%d')", "CURDATE()", "catCount DESC", true)
                     .then((value) => {
+                        let output = `Eve has cursed ${todayCount} `;
+
                         if (value[0] != undefined && value[0] != null) {
-                            var output = `Eve has cursed ${todayCount} `;
                             output = this.#formatOutput(output, todayCount, allTime, $value[0].category);
 
                             resolve(output);
                         } else {
-                            var output = `Eve has cursed ${todayCount} `;
                             output = this.#formatOutput(output, todayCount, allTime);
 
                             resolve(output);
