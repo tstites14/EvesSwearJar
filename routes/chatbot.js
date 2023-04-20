@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
 
     res.writeHead(200, {'Content-Type': 'text/plain'});
 
-    var phrase = new Phrase(req.query.phrase);
+    const phrase = new Phrase(req.query.phrase);
 
     /*Command code starts here*/
     const phraseArray = phrase.getPhraseArray();
