@@ -7,6 +7,7 @@
     <body>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
         <script>
+            /*Matter.js jar*/
             const Engine = Matter.Engine,
                 Render = Matter.Render,
                 Runner = Matter.Runner,
@@ -38,17 +39,20 @@
 
             // run the engine
             Runner.run(runner, engine);
-
+            
             /*server polling*/
-            function getStatus() {
-                const status = fetch("http://wh1178760.ispot.cc/evesswearjar/jar/status").then((value) => {
-                    
-                    
-                    setTimeout(getStatus, 7000);
-                });
+            async function getStatus() {
+                var status = await fetch("http://wh1178760.ispot.cc/evesswearjar/jar/status");
+                var text = await status.text();
+
+                return text;
             }
 
-            getStatus();
+            function checkStatus() {
+                console.log("TEST");
+            }
+
+            setInterval(checkStatus, 2000);
         </script>
     </body>
 </html>
