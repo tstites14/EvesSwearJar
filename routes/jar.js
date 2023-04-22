@@ -7,7 +7,11 @@ router.get('/jar', function(req, res) {
     res.sendFile('jar.svg', { root: './public/TheJar' });
 })
 
-router.get("/jar/status", function(res) {
+router.get('/jar/jar.js', function(req, res) {
+    res.sendFile('jar.js', { root: './public/TheJar' });
+})
+
+router.get("/jar/status", function(req, res) {
     res.end("New event");
 })
 
