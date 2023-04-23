@@ -1,5 +1,3 @@
-
-
 /*Matter.js jar*/
 const Engine = Matter.Engine,
     Render = Matter.Render,
@@ -46,8 +44,10 @@ async function getStatus() {
 }
 
 function checkStatus() {
-    getStatus().then(value => console.log(value));
-    console.log("TEST");
+    getStatus().then(value => {
+        if (value == "New event")
+            Composite.add(engine.world, [Bodies.circle(400, 200, 80)]);
+    });
 }
 
 setInterval(checkStatus, 2000);
