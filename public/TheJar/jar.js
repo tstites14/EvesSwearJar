@@ -45,7 +45,9 @@ async function getStatus() {
 
 function checkStatus() {
     getStatus().then(value => {
-        if (value == "New event")
+        console.log(value);
+        
+        if (value == "1")
             Composite.add(engine.world, [Bodies.circle(400, 200, 80)]);
     });
 }

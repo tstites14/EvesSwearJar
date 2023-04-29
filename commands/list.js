@@ -16,7 +16,7 @@ class List extends Command {
                         let output = `Eve has cursed ${todayCount} `;
 
                         if (value[0] != undefined && value[0] != null) {
-                            output = this.#formatOutput(output, todayCount, allTime, $value[0].category);
+                            output = this.#formatOutput(output, todayCount, allTime, value[0].category);
 
                             resolve(output);
                         } else {

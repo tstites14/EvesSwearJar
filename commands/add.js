@@ -25,6 +25,9 @@ class Add extends Command {
 
                     dbConnection.update("params", ["squats"], [currentValue.toString()], "squats", oldValue.toString())
 
+                    //Send signal to add coin to client jar
+                    dbConnection.update("params", ["newEvent"], ["1"], "1", "1");
+
                     //Run the List command for output
                     new List(this.commandArray).run(dbConnection)
                     .then((value) => {

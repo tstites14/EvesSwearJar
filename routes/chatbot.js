@@ -26,4 +26,8 @@ router.get('/', function(req, res) {
         });
 });
 
+router.get('/jar.js', function(req, res) {
+    res.sendFile('jar.js', { root: './public/TheJar' });
+})
+
 module.exports = router;
